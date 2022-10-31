@@ -1,18 +1,28 @@
-import { ethers } from "hardhat";
+import { ethers, network } from "hardhat";
+import { developmentChains, networkConfig } from "../helper-hardhat-config";
+import { verify } from "../utils/verify";
+
+// Replace [ contract ] with contract name
+// Replace [ Contract ] with contract name
 
 const main = async () => {
   const [deployer] = await ethers.getSigners();
-  const contractFactory = await ethers.getContractFactory("Contract", deployer); // Enter contract name
-  const contract = await contractFactory.deploy(); // Enter contract name
 
-  await contract.deployed(); // Enter contract name
+  // Deploy contract
+  const contract = await (await ethers.getContractFactory("Contract")).deploy(); 
 
+  await contract.deployed(); 
+
+  console.log(`Contract deployed to ${contract.address}`);
   
-  console.log(`Contract deployed to ${contract.address}`); // Enter contract name
+  // Verify contract if not on dev chain
+  if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    await contract.deployTransaction.wait(networkConfig[network.name].blockConfirmations);
+
+    await verify(contract.address, []);
+  }
 } 
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
