@@ -1,7 +1,8 @@
 import { ethers } from "hardhat";
 
 const main = async () => {
-  const contractFactory = await ethers.getContractFactory("Contract"); // Enter contract name
+  const [deployer] = await ethers.getSigners();
+  const contractFactory = await ethers.getContractFactory("Contract", deployer); // Enter contract name
   const contract = await contractFactory.deploy(); // Enter contract name
 
   await contract.deployed(); // Enter contract name
