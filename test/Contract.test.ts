@@ -3,19 +3,21 @@ import { assert, expect } from "chai";
 import { ethers } from "hardhat";
 import { Contract } from "../typechain-types"; // Enter contract name
 
-describe("Contract", function () { // Enter contract name
-  let ourToken: OurToken; // Enter contract name
+// Replace [ contract ] with contract name
+// Replace [ Contract ] with contract name
+
+describe("Contract", function () {
+  let contract: Contract;
   let deployer: SignerWithAddress;
   let otherAccount: SignerWithAddress;
 
   beforeEach(async () => {
-    // Contracts are deployed using the first signer/account by default
     [deployer, otherAccount] = await ethers.getSigners();
 
-    const ourTokenFactory = await ethers.getContractFactory("OurToken"); // Enter contract name
-    ourToken = await ourTokenFactory.deploy(); // Enter contract name
+    contract = await (await ethers.getContractFactory("Contract")).deploy();
   });
 
   describe("function", () => { // Enter function name
     it("", async () => {});
-  });
+  })
+})
